@@ -12,25 +12,17 @@ def load_data(path):
     return list_of_rows
 
 
-def identify_unique_classes(list_of_rows):
-    temp = ''
-    for row in list_of_rows:
-        for char in row:
-            temp += char
-    uniques = set(temp)
-    return uniques
-
-
-def count_class_occurance(list_of_rows, uniques):
+def identify_and_count_unique_classes(list_of_rows):
     dict = {}
-    for unique in uniques:
-        dict[unique] = 0
-
     for row in list_of_rows:
         for char in row:
-            dict[char] += 1
-
+            if char in dict:
+                dict[char] += 1
+            else:
+                dict[char] = 0
     return dict
 
+
 list_of_rows = load_data('test.txt')
-count_class_occurance(list_of_rows, identify_unique_classes(list_of_rows))
+
+print(identify_and_count_unique_classes(list_of_rows))
