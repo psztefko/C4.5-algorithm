@@ -39,13 +39,17 @@ def create_dictionary_of_values(column: List[int]) -> dict:
     return dictionary_of_values
 
 
-def get_class_occurrences(columns):
+def get_classes_occurrences(columns):
     """GIT"""
     return [create_dictionary_of_values(column) for column in columns]
 
 
 def count_probability(conditional_attribute_dict: dict, column_length: int) -> List[float]:
     return [element / column_length for element in conditional_attribute_dict.values()]
+
+
+def count_entropy(probabilities: List[float]) -> float:
+    return -(sum([probability * log2(probability) for probability in probabilities]))
 
 
 conditional_attributes = load_data("gielda.txt")
@@ -57,10 +61,11 @@ decisional_attribute = columns[-1]
 columns = columns[:-1]
 
 # get dict of values and their occurrences for each attribute
-list_of_dicts = get_class_occurrences(columns)
-
-list_of_probabilities = []
-for dictionary in list_of_dicts:
-    list_of_probabilities.append(count_probability((dictionary), len(columns[0])))
+decisional_attr_occurrence = create_dictionary_of_values(decisional_attribute)
+print(decisional_attr_occurrence)
 
 
+probabilities = count_probability((decisional_attr_occurrence), len(columns[0]))
+print(probabilities)
+
+print(count_entropy(probabilities))
