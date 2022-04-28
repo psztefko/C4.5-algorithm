@@ -1,21 +1,25 @@
 import csv
-from typing import List
+from typing import List, Dict
 from math import log2
 
 
-def load_data(path: str) -> List[List[int]]:
-    """ "GIT"""
-    conditional_attributes = []
+def load_data(path: str) -> List[List[any]]:
+    """Load data from file
+        :return list of list of values
+    """
+    data = []
     with open(path, newline="") as file:
         csv_reader = csv.reader(file, delimiter=",")
         for row in csv_reader:
-            conditional_attributes.append(row)
+            data.append(row)
 
-    return conditional_attributes
+    return data
 
 
 def extract_columns(conditional_attributes: List[List[int]]) -> List[List[int]]:
-    """GIT"""
+    """Converts list of rows to list of columns
+        :return list of columns
+    """
     columns = []
     for column_index in range(len(conditional_attributes[0])):
         column = []
@@ -26,8 +30,10 @@ def extract_columns(conditional_attributes: List[List[int]]) -> List[List[int]]:
     return columns
 
 
-def create_dictionary_of_values(column: List[int]) -> dict:
-    """GIT"""
+def get_class_occurrences(column: List[int]) -> Dict[any, int]:
+    """Creates dictionary with each column value as a key and its occurrence as value
+        :return dict{"value": occurrence}
+    """
     dictionary_of_values = {}
 
     for attribute in column:
@@ -39,33 +45,41 @@ def create_dictionary_of_values(column: List[int]) -> dict:
     return dictionary_of_values
 
 
-def get_classes_occurrences(columns):
-    """GIT"""
-    return [create_dictionary_of_values(column) for column in columns]
+def get_classes_occurrences(columns: List[List[int]]) -> List[Dict[str, int]]:
+    """Get dict with values occurrence for each column
+        :return list of dictionaries
+    """
+    return [get_class_occurrences(column) for column in columns]
 
 
 def count_probability(conditional_attribute_dict: dict, column_length: int) -> List[float]:
+    """Count probability of each value in column
+        :return list of probabilities
+    """
     return [element / column_length for element in conditional_attribute_dict.values()]
 
 
 def count_entropy(probabilities: List[float]) -> float:
+    """Count entropy of column based on it's probabilities
+        :return entropy
+    """
     return -(sum([probability * log2(probability) for probability in probabilities]))
 
+
+def information_func():
+    pass
 
 conditional_attributes = load_data("gielda.txt")
 
 # convert list of rows to list of columns
 columns = extract_columns(conditional_attributes)
 
-decisional_attribute = columns[-1]
+decision_attribute = columns[-1]
 columns = columns[:-1]
 
 # get dict of values and their occurrences for each attribute
-decisional_attr_occurrence = create_dictionary_of_values(decisional_attribute)
-print(decisional_attr_occurrence)
+decision_attr_occurrence = get_class_occurrences(decision_attribute)
 
+probabilities = count_probability(decision_attr_occurrence, len(columns[0]))
 
-probabilities = count_probability((decisional_attr_occurrence), len(columns[0]))
-print(probabilities)
-
-print(count_entropy(probabilities))
+count_entropy(probabilities)
