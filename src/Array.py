@@ -44,3 +44,18 @@ class Array:
             :return entropy
         """
         return -(sum([probability * log2(probability) for probability in self.get_probability(attr_index)]))
+
+    def information_func(self, attr_index: int):
+        """Count information func value for given attribute
+            :return
+        """
+
+        attr_info = 0.0
+        for key in self.occurrences_array[attr_index].keys():
+            attr_info = 0
+            rows_subset = [row for row in self.array if row[attr_index] == key]
+
+            print(rows_subset)
+            attr_info += len(rows_subset) / self.column_length * self.get_entropy(attr_index)
+
+        return attr_info

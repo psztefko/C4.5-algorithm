@@ -14,6 +14,3 @@ def load_data(path: str) -> List[List[any]]:
             data.append(row)
 
     return data
-
-
-array = Array(load_data("gielda.txt"))
