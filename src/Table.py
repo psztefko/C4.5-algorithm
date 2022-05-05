@@ -95,8 +95,13 @@ class Table:
 
         return self.custom_entropy(probability)
 
-
-
+    def gain_ratio(self, attr_index: int) -> float:
+        """
+        Count gain ratio based on gain and split information values
+        :param attr_index:
+        :return:
+        """
+        return self.gain(attr_index) / self.split_information(attr_index)
 
 
 
