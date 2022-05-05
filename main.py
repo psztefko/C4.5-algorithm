@@ -1,6 +1,6 @@
 import csv
 from typing import List
-from src.Array import Array
+from src.Table import Table
 
 
 def load_data(path: str) -> List[List[any]]:
@@ -14,3 +14,8 @@ def load_data(path: str) -> List[List[any]]:
             data.append(row)
 
     return data
+
+
+array = Table(load_data("gielda.txt"))
+
+print(array.information_func(0))
