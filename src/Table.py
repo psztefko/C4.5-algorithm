@@ -41,24 +41,33 @@ class Table:
         """
         return [element / self.rows for element in self.occurrences_array[attr_index].values()]
 
-    def entropy(self, attr_index: int):
+    def entropy(self, attr_index: int) -> float:
         """
         Count entropy of column based on it's probabilities
         :return entropy
         """
         return -(sum([probability * log2(probability) for probability in self.probability(attr_index)]))
 
-    def information(self, attr_index: int):
+    def custom_entropy(self, custom_table: List[any]) -> float:
+        """
+        Count entropy for a custom table of probabilities
+        :param custom_table:
+        :return:
+        """
+        return -(sum([probability * log2(probability) for probability in custom_table]))
+
+
+    def information(self, attr_index: int) -> float:
         """
         Count information func value for given attribute
-        :return
+        :return attribute info
         """
 
         attr_info = 0.0
         for key in self.occurrences_array[attr_index].keys():
-            subset = Table([row for row in self.table if row[attr_index] == key])
+            sub_table = Table([row for row in self.table if row[attr_index] == key])
 
-            attr_info += subset.rows / self.rows * subset.entropy(self.columns - 1)
+            attr_info += sub_table.rows / self.rows * sub_table.entropy(self.columns - 1)
 
         return attr_info
 
@@ -70,3 +79,26 @@ class Table:
         """
 
         return self.entropy(self.columns - 1) - self.information(attr_index)
+
+    def split_information(self, attr_index: int) -> float:
+        """
+        Count entropy value for given attribute
+        :param attr_index:
+        :return:
+        """
+
+        probability = []
+        for key in self.occurrences_array[attr_index].keys():
+            sub_table = Table([row for row in self.table if row[attr_index] == key])
+
+            probability.append(sub_table.rows / self.rows)
+
+        return self.custom_entropy(probability)
+
+
+
+
+
+
+
+

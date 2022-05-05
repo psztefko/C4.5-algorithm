@@ -18,3 +18,6 @@ def load_data(path: str) -> List[List[any]]:
 
 
 array = Table(load_data("gielda.txt"))
+
+print(array.split_information(0))
+
