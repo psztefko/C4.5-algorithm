@@ -4,8 +4,9 @@ from src.Table import Table
 
 
 def load_data(path: str) -> List[List[any]]:
-    """Load data from file
-        :return list of list of values
+    """
+    Load data from file
+    :return list of list of values
     """
     data = []
     with open(path, newline="") as file:
@@ -17,5 +18,3 @@ def load_data(path: str) -> List[List[any]]:
 
 
 array = Table(load_data("gielda.txt"))
-
-print(array.information_func(0))
