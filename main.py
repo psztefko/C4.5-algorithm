@@ -1,7 +1,7 @@
 import csv
 from typing import List
 from src.Table import Table
-from src.Tree import Node, Tree
+from src.Tree import Node
 
 
 def load_data(path: str) -> List[List[any]]:
@@ -18,21 +18,33 @@ def load_data(path: str) -> List[List[any]]:
     return data
 
 
-def build(array: List[any], attr: str, intend='', key=''):
+def build(node: Node):
+    array = node.table
 
     index = array.get_highest_gain_ratio_index()
 
-    if index >= 0:
-        attr = 'a' + str(index + 1)
-        intend += '    '
-        print(intend + str(key) + ' -> ' + attr)
-
-    if (index != -1):
+    if index != -1:
+        tables = []
         for key in list(array.occurrences_array[index].keys()):
-            new_array = Table([row for row in array.table if row[index] == key])
+            tables.append(Table([row for row in array.table if row[index] == key]))
 
-            print(intend + ': ' + str(key) + ' -> ' + str(new_array.table[0][new_array.columns - 1]))
-            build(new_array, attr, intend, str(key))
+            # print(new_table.table)
+            # print(new_table.get_highest_gain_ratio_index())
+
+        for table in tables:
+            node.children.extend([Node(index, table.table[0][index], table, [])])
+
+        for child in node.children:
+            build(child)
+
+    else:  # zostaje liściem
+        pass
 
 
-build(Table(load_data("car.data")), '')
+array = load_data("gielda.txt")
+
+node = Node(0, "root", Table(array), [])
+build(node)
+
+print(node.__str__())
+# {1: {'old': 'down', 'mid': {2: {'yes': 'down', 'no': 'up'}}, 'new': 'up'}}
