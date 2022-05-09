@@ -16,7 +16,6 @@ class Node:
     def __init__(self, array):
         self.array = array
 
-
     label: str  # aktualna wartosc atrybutu
     decision_table: Table  # tablica
     children: List[Node]

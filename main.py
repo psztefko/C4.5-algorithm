@@ -18,26 +18,31 @@ def load_data(path: str) -> List[List[any]]:
     return data
 
 
+def build(array: List[any], attr: str, intend=''):
 
-def build(array: List[any]):
-    #node = Node()
-    print('--')
     index = array.get_highest_gain_ratio_index()
-    if(index != -1):
+
+    if index >= 0:
+        attr = 'a' + str(index + 1)
+        intend += '    '
+        print(intend + attr)
+    else:
+        pass
+        # intend = intend[:-4]
+
+    if (index != -1):
         for key in list(array.occurrences_array[index].keys()):
             new_array = Table([row for row in array.table if row[index] == key])
-            print(new_array.table)
-            print(new_array.get_highest_gain_ratio_index())
+            # print(new_array.table)
+            # print(new_array.get_highest_gain_ratio_index())
 
-            build(new_array)
+            print(intend + ': ' + str(key) + ' -> ' + str(new_array.table[0][new_array.columns - 1]))
+            build(new_array, attr, intend)
 
-    else: # zostaje liściem
+    else:  # zostaje liściem
         pass
 
 
-
-build(Table(load_data("gielda.txt")))
-
-
+build(Table(load_data("car.data")), '')
 
 # {1: {'old': 'down', 'mid': {2: {'yes': 'down', 'no': 'up'}}, 'new': 'up'}}
