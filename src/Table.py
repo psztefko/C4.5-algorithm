@@ -1,18 +1,21 @@
 from typing import List, Dict
 from math import log2
 
-
 class Table:
     table: List[List[any]]
     occurrences_array: List[Dict[str, int]]
     rows: int
     columns: int
+    conditional_attrs: List[any]
+    decisional_attrs = List[any]
 
     def __init__(self, array):
         self.table = array
         self.rows = len(array)
         self.columns = len(array[0])
         self.occurrences_array = self.occurrences()
+        self.conditional_attrs = self.table[:-1]
+        self.decisional_attrs = self.table[-1]
 
     def occurrences(self):
         """
@@ -101,8 +104,26 @@ class Table:
         :param attr_index:
         :return:
         """
-        return self.gain(attr_index) / self.split_information(attr_index)
+        info = self.split_information(attr_index)
+        return self.gain(attr_index) / info if info != 0 else 0
 
+
+    def get_highest_gain_ratio_index(self) -> int:
+        """
+        Gets index of attribute with highest gain ratio
+        :return: index
+        """
+        highest_gain_ratio = self.gain_ratio(0)
+        highest_gain = 0
+        for index in range(self.columns - 1):
+            if self.gain_ratio(index) > highest_gain_ratio:
+                highest_gain = index
+                highest_gain_ratio = self.gain_ratio(index)
+
+        if highest_gain_ratio > 0:
+            return highest_gain
+        else:
+            return -1
 
 
 
