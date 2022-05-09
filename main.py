@@ -18,17 +18,14 @@ def load_data(path: str) -> List[List[any]]:
     return data
 
 
-def build(array: List[any], attr: str, intend=''):
+def build(array: List[any], attr: str, intend='', key=''):
 
     index = array.get_highest_gain_ratio_index()
 
     if index >= 0:
         attr = 'a' + str(index + 1)
         intend += '    '
-        print(intend + attr)
-    else:
-        pass
-        # intend = intend[:-4]
+        print(intend + str(key) + ' -> ' + attr)
 
     if (index != -1):
         for key in list(array.occurrences_array[index].keys()):
@@ -37,7 +34,7 @@ def build(array: List[any], attr: str, intend=''):
             # print(new_array.get_highest_gain_ratio_index())
 
             print(intend + ': ' + str(key) + ' -> ' + str(new_array.table[0][new_array.columns - 1]))
-            build(new_array, attr, intend)
+            build(new_array, attr, intend, str(key))
 
     else:  # zostaje liściem
         pass
