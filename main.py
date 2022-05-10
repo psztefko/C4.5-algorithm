@@ -28,17 +28,40 @@ def build(node: Node):
         for key in list(array.occurrences_array[index].keys()):
             tables.append(Table([row for row in array.table if row[index] == key]))
 
-            # print(new_table.table)
-            # print(new_table.get_highest_gain_ratio_index())
-
         for table in tables:
             node.children.extend([Node(index, table.table[0][index], table, [])])
 
         for child in node.children:
             build(child)
 
-    else:  # zostaje liściem
-        pass
+
+def print_tree(node: Node, indent=0):
+
+    if node.is_root():
+        print_root()
+        for n in node.children:
+            print_tree(n, indent + 2)
+    elif node.children:
+        print_node(node.branch_label, node.label, indent)
+        for n in node.children:
+            print_tree(n, indent + 2)
+    else:
+        print_leaf(node, indent)
+
+    return dict
+
+
+def print_leaf(node: Node, indent):
+    for key, value in node.get_attrs().items():
+        print(' '*indent + key + ' -> ' + value)
+
+
+def print_root():
+    print('Atrybut 1')
+
+
+def print_node(branch_label: str, label: int, indent: int):
+    print(' '*indent + branch_label + ' -> ' + 'Atrybut ' + str(label))
 
 
 array = load_data("gielda.txt")
@@ -46,5 +69,4 @@ array = load_data("gielda.txt")
 node = Node(0, "root", Table(array), [])
 build(node)
 
-print(node.__str__())
-# {1: {'old': 'down', 'mid': {2: {'yes': 'down', 'no': 'up'}}, 'new': 'up'}}
+print_tree(node)
