@@ -11,13 +11,14 @@ class Node:
     branch_label: str  # wartosc atrybutu z ktorego zostala stworzona typu old, mid, new
     table: Table  # tablica
     children: List[Node]
-    divide_index: 0
+    index: int
 
-    def __init__(self, label: str, branch_label: str, table: Table, children: List[Node]):
+    def __init__(self, label: str, branch_label: str, table: Table, children: List[Node], index: int):
         self.label = label
         self.branch_label = branch_label
         self.table = table
         self.children = []
+        self.index = index
 
     def __str__(self):
         return {

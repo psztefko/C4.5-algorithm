@@ -29,20 +29,19 @@ def build(node: Node):
             tables.append(Table([row for row in array.table if row[index] == key]))
 
         for table in tables:
-            node.children.extend([Node(index, table.table[0][index], table, [])])
+            node.children.extend([Node(index, table.table[0][index], table, [], index)])
 
         for child in node.children:
             build(child)
 
 
 def print_tree(node: Node, indent=0):
-
     if node.is_root():
         print_root()
         for n in node.children:
             print_tree(n, indent + 2)
     elif node.children:
-        print_node(node.branch_label, node.label, indent)
+        print_node(node.branch_label, node.children[0].index + 1, indent)
         for n in node.children:
             print_tree(n, indent + 2)
     else:
@@ -60,13 +59,13 @@ def print_root():
     print('Atrybut 1')
 
 
-def print_node(branch_label: str, label: int, indent: int):
-    print(' '*indent + branch_label + ' -> ' + 'Atrybut ' + str(label))
+def print_node(branch_label: str, index: int, indent: int):
+    print(' '*indent + branch_label + ' -> ' + 'Atrybut ' + str(index))
 
 
 array = load_data("gielda.txt")
 
-node = Node(0, "root", Table(array), [])
+node = Node(0, "root", Table(array), [], None)
 build(node)
 
 print_tree(node)
