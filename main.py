@@ -37,11 +37,11 @@ def build(node: Node):
 
 def print_tree(node: Node, indent=0):
     if node.is_root():
-        print_root()
+        print_root(node.label)
         for n in node.children:
             print_tree(n, indent + 2)
     elif node.children:
-        print_node(node.branch_label, node.children[0].index + 1, indent)
+        print_node(node.branch_label, node.children[0].index, indent)
         for n in node.children:
             print_tree(n, indent + 2)
     else:
@@ -52,18 +52,18 @@ def print_tree(node: Node, indent=0):
 
 def print_leaf(node: Node, indent):
     for key, value in node.get_attrs().items():
-        print(' '*indent + key + ' -> ' + value)
+        print('  '*indent + key + ' -> ' + value)
 
 
-def print_root():
-    print('Atrybut 1')
+def print_root(label):
+    print('Atrybut ', label)
 
 
 def print_node(branch_label: str, index: int, indent: int):
-    print(' '*indent + branch_label + ' -> ' + 'Atrybut ' + str(index))
+    print('  '*indent + branch_label + ' -> ' + 'Atrybut ' + str(index))
 
 
-array = load_data("gielda.txt")
+array = load_data("breast-cancer.data")
 
 node = Node(0, "root", Table(array), [], None)
 build(node)
