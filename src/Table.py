@@ -1,6 +1,7 @@
 from typing import List, Dict
 from math import log2
 
+
 class Table:
     table: List[List[any]]
     occurrences_array: List[Dict[str, int]]
@@ -42,14 +43,24 @@ class Table:
         Count probability of each value in column
         :return list of probabilities
         """
-        return [element / self.rows for element in self.occurrences_array[attr_index].values()]
+        return [
+            element / self.rows
+            for element in self.occurrences_array[attr_index].values()
+        ]
 
     def entropy(self, attr_index: int) -> float:
         """
         Count entropy of column based on it's probabilities
         :return entropy
         """
-        return -(sum([probability * log2(probability) for probability in self.probability(attr_index)]))
+        return -(
+            sum(
+                [
+                    probability * log2(probability)
+                    for probability in self.probability(attr_index)
+                ]
+            )
+        )
 
     def custom_entropy(self, custom_table: List[any]) -> float:
         """
@@ -58,7 +69,6 @@ class Table:
         :return:
         """
         return -(sum([probability * log2(probability) for probability in custom_table]))
-
 
     def information(self, attr_index: int) -> float:
         """
@@ -70,7 +80,9 @@ class Table:
         for key in self.occurrences_array[attr_index].keys():
             sub_table = Table([row for row in self.table if row[attr_index] == key])
 
-            attr_info += sub_table.rows / self.rows * sub_table.entropy(self.columns - 1)
+            attr_info += (
+                sub_table.rows / self.rows * sub_table.entropy(self.columns - 1)
+            )
 
         return attr_info
 
@@ -107,7 +119,6 @@ class Table:
         info = self.split_information(attr_index)
         return self.gain(attr_index) / info if info != 0 else 0
 
-
     def get_highest_gain_ratio_index(self) -> int:
         """
         Gets index of attribute with highest gain ratio
@@ -124,7 +135,3 @@ class Table:
             return highest_gain
         else:
             return -1
-
-
-
-
