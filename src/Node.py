@@ -7,9 +7,9 @@ from src.Table import Table
 
 @dataclass
 class Node:
-    label: int  # aktualna wartosc atrybutu
-    branch_label: str  # wartosc atrybutu z ktorego zostala stworzona typu old, mid, new
-    table: Table  # tablica
+    label: int
+    branch_label: str
+    table: Table
     children: List[Node]
     index: int
 
@@ -28,25 +28,6 @@ class Node:
             "children: ": [children.__str__() for children in self.children],
         }
 
-    # def __init__(self, branch_label: str, decision_table: Table):
-    #     self.branch_label = branch_label
-    #     self.decision_table = decision_table
-    #     self.children = []
-    #
-    # def __int__(self, label: str, branch_label: str):
-    #     self.label = label
-    #     self.branch_label = branch_label
-    #     self.children = []
-
-    def get_table(self):
-        return self.decision_table
-
-    def get_label(self):
-        return self.label
-
-    def get_branch_label(self):
-        return self.branch_label
-
     def is_leaf(self) -> bool:
         return True if self.children else False
 
@@ -54,6 +35,10 @@ class Node:
         return self.branch_label == 'root'
 
     def get_attrs(self):
+        """
+        Creates dict of conditional attribute as key and it's decision attribute as value
+        :return:
+        """
         dict_of_attrs = {}
 
         for row in self.table.table:

@@ -1,7 +1,7 @@
 import csv
 from typing import List
 from src.Table import Table
-from src.Tree import Node
+from src.Node import Node
 
 
 def load_data(path: str) -> List[List[any]]:
@@ -19,6 +19,11 @@ def load_data(path: str) -> List[List[any]]:
 
 
 def build(node: Node):
+    """
+    Creates tree made using recurrence
+    :param node:
+    :return:
+    """
     array = node.table
 
     index = array.get_highest_gain_ratio_index()
@@ -36,6 +41,12 @@ def build(node: Node):
 
 
 def print_tree(node: Node, indent=0):
+    """
+    Prints tree structure
+    :param node:
+    :param indent:
+    :return:
+    """
     if node.is_root():
         print_root(node.label)
         for n in node.children:
@@ -63,9 +74,10 @@ def print_node(branch_label: str, index: int, indent: int):
     print('  '*indent + branch_label + ' -> ' + 'Atrybut ' + str(index))
 
 
-array = load_data("breast-cancer.data")
+array = load_data("data/breast-cancer.data")
 
 node = Node(0, "root", Table(array), [], None)
+
 build(node)
 
 print_tree(node)
